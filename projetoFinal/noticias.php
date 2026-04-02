@@ -1,6 +1,6 @@
 <?php
 require_once 'conexao.php';
-$noticias = $pdo->query('SELECT n.*, u.nome as autor_nome FROM noticias n JOIN usuarios u ON n.autor_id = u.id ORDER BY n.data_publicacao DESC')->fetchAll();
+$noticias = $pdo->query('SELECT n.*, u.nome as autor_nome FROM noticias n JOIN usuarios u ON n.autor = u.id ORDER BY n.data DESC')->fetchAll();
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -14,20 +14,55 @@ $noticias = $pdo->query('SELECT n.*, u.nome as autor_nome FROM noticias n JOIN u
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <nav class="navbar"><a href="index.php">Início</a> | <a href="dashboard.php">Dashboard</a> | <a href="login.php">Login</a></nav>
-    <main class="page-container">
-        <h1>Notícias Públicas</h1>
-        <?php if (empty($noticias)): ?>
-            <p>Nenhuma notícia publicada ainda.</p>
-        <?php else: ?>
-            <?php foreach ($noticias as $n): ?>
-                <article class="noticia-card">
-                    <h2><?= htmlspecialchars($n['titulo']) ?></h2>
-                    <p><strong>Por:</strong> <?= htmlspecialchars($n['autor_nome']) ?> | <?= date('d/m/Y H:i', strtotime($n['data_publicacao'])) ?></p>
-                    <p><?= nl2br(htmlspecialchars($n['conteudo'])) ?></p>
-                </article>
-            <?php endforeach; ?>
-        <?php endif; ?>
-    </main>
+    <nav class="navbar">
+        <div class="navbar-brand"><img src="imagens/Semfundo.png" alt="Logo" class="navbar-logo"> EcoFinanças</div>
+        <div class="navbar-info">
+            <a href="index.php?view=portal" class="btn btn-ghost btn-sm"><i class="fas fa-home"></i> Início</a>
+            <a href="dashboard.php" class="btn btn-ghost btn-sm"><i class="fas fa-tachometer-alt"></i> Meu perfil</a>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h2><i class="fas fa-newspaper"></i> Notícias Públicas</h2>
+                <span class="badge"><?= count($noticias) ?> notícias</span>
+            </div>
+            <div class="card-body">
+                <?php if (empty($noticias)): ?>
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <h3>Nenhuma notícia publicada</h3>
+                        <p>Volte em breve para ver as últimas notícias.</p>
+                    </div>
+                <?php else: ?>
+                    <div class="noticias-grid">
+                        <?php foreach ($noticias as $n): ?>
+                            <a href="noticia.php?id=<?= $n['id'] ?>" class="noticia-card noticia-card-link">
+                                <?php if ($n['imagem']): ?>
+                                    <div class="noticia-imagem">
+                                        <img src="<?= htmlspecialchars($n['imagem']) ?>" alt="<?= htmlspecialchars($n['titulo']) ?>" class="noticia-imagem-erro">
+                                    </div>
+                                <?php endif; ?>
+                                <div class="noticia-conteudo">
+                                    <div class="noticia-header">
+                                        <h3 class="noticia-titulo"><?= htmlspecialchars($n['titulo']) ?></h3>
+                                        <div class="noticia-meta">
+                                            <span class="noticia-autor"><i class="fas fa-user-circle"></i> <?= htmlspecialchars($n['autor_nome']) ?></span>
+                                            <span class="noticia-data"><i class="fas fa-calendar"></i> <?= date('d/m/Y H:i', strtotime($n['data'])) ?></span>
+                                        </div>
+                                    </div>
+                                    <p class="noticia-texto"><?= nl2br(htmlspecialchars(mb_strimwidth($n['noticia'], 0, 200, '...'))) ?></p>
+                                    <div class="noticia-leitura">
+                                        <span class="btn btn-sm btn-primary"><i class="fas fa-book-open"></i> Ler Mais</span>
+                                    </div>
+                                </div>
+                            </a>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

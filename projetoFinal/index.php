@@ -31,13 +31,14 @@ $inicialUsuario = $isLogado ? mb_strtoupper(mb_substr($nomeUsuario, 0, 1, 'UTF-8
     <header class="hero-header">
         <nav class="navbar">
             <div class="navbar-brand">
-                <i class="fas fa-money-bill"></i>
+                <img src="imagens/Semfundo.png" alt="Logo" class="navbar-logo">
                 <span>EcoFinanças</span>
             </div>
             <div class="navbar-info">
                 <?php if ($isLogado): ?>
                     <a href="noticias.php" class="btn btn-ghost btn-sm"><i class="fas fa-newspaper"></i> Notícias</a>
-                    <a href="dashboard.php" class="btn btn-ghost btn-sm profile-link"><span class="profile-badge"><?= $inicialUsuario ?></span> <?= $nomeUsuario ?></a>
+                    <a href="dashboard.php" class="btn btn-ghost btn-sm profile-link"><span
+                            class="profile-badge"><?= $inicialUsuario ?></span> <?= $nomeUsuario ?></a>
                     <a href="logout.php" class="btn btn-ghost btn-sm"><i class="fas fa-sign-out-alt"></i> Sair</a>
                 <?php else: ?>
                     <a href="login.php" class="btn btn-ghost btn-sm"><i class="fas fa-sign-in-alt"></i> Entrar</a>
@@ -50,7 +51,8 @@ $inicialUsuario = $isLogado ? mb_strtoupper(mb_substr($nomeUsuario, 0, 1, 'UTF-8
         <div class="hero-content">
             <div class="hero-text">
                 <h1>Seu Portal de Notícias Financeiras</h1>
-                <p>Informações atualizadas sobre economia, investimentos e finanças pessoais. Gerencie e compartilhe conhecimento financeiro com nossa comunidade.</p>
+                <p>Informações atualizadas sobre economia, investimentos e finanças pessoais. Gerencie e compartilhe
+                    conhecimento financeiro com nossa comunidade.</p>
                 <div class="hero-actions">
                 </div>
             </div>
@@ -72,7 +74,8 @@ $inicialUsuario = $isLogado ? mb_strtoupper(mb_substr($nomeUsuario, 0, 1, 'UTF-8
                         <i class="fas fa-newspaper"></i>
                     </div>
                     <h3>Notícias Atualizadas</h3>
-                    <p>Conteúdo financeiro fresco e relevante, atualizado diariamente por nossa equipe especializada.</p>
+                    <p>Conteúdo financeiro fresco e relevante, atualizado diariamente por nossa equipe especializada.
+                    </p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
@@ -125,12 +128,6 @@ $inicialUsuario = $isLogado ? mb_strtoupper(mb_substr($nomeUsuario, 0, 1, 'UTF-8
             <h2>Pronto para começar?</h2>
             <p>Junte-se à nossa comunidade e tenha acesso a conteúdo financeiro exclusivo.</p>
             <div class="cta-actions">
-                <a href="cadastro.php" class="btn btn-primary">
-                    <i class="fas fa-user-plus"></i> Criar Conta Grátis
-                </a>
-                <a href="login.php" class="btn btn-secondary">
-                    <i class="fas fa-sign-in-alt"></i> Já tenho conta
-                </a>
             </div>
         </div>
     </section>
@@ -140,13 +137,11 @@ $inicialUsuario = $isLogado ? mb_strtoupper(mb_substr($nomeUsuario, 0, 1, 'UTF-8
         <div class="container">
             <div class="footer-content">
                 <div class="footer-brand">
-                    <i class="fas fa-wallet"></i>
+                    <img src="imagens/Semfundo.png" alt="Logo" class="navbar-logo">
                     <span>EcoFinanças</span>
                 </div>
                 <div class="footer-links">
-                    <a href="noticias.php">Notícias</a>
-                    <a href="login.php">Login</a>
-                    <a href="cadastro.php">Cadastro</a>
+
                 </div>
             </div>
             <div class="footer-bottom">

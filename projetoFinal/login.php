@@ -12,27 +12,31 @@ $erro = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email'] ?? '');
     $senha = $_POST['senha'] ?? '';
+    $tipo = $_POST['tipo'] ?? '';
     
-    if (empty($email) || empty($senha)) {
+    if (empty($email) || empty($senha) || empty($tipo)) {
         $erro = 'Preencha todos os campos.';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $erro = 'E-mail inválido.';
+    } elseif (!in_array($tipo, ['admin', 'reporter', 'leitor'])) {
+        $erro = 'Tipo de usuário inválido.';
     } else {
         require_once 'conexao.php';
         
-        $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE email = ?");
-        $stmt->execute([$email]);
+        $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE email = ? AND tipo = ?");
+        $stmt->execute([$email, $tipo]);
         $usuario = $stmt->fetch();
         
         if ($usuario && password_verify($senha, $usuario['senha'])) {
             $_SESSION['usuario_id'] = $usuario['id'];
             $_SESSION['usuario_nome'] = $usuario['nome'];
             $_SESSION['usuario_email'] = $usuario['email'];
+            $_SESSION['usuario_tipo'] = $usuario['tipo'];
             
             header('Location: dashboard.php');
             exit;
         } else {
-            $erro = 'E-mail ou senha incorretos.';
+            $erro = 'E-mail, senha ou tipo de usuário incorretos.';
         }
     }
 }
@@ -53,8 +57,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="cadastro-container">
         <div class="cadastro-card">
             <div class="cadastro-header">
-                <div class="logo-icon">
-                    <i class="fas fa-money-bill"></i>
+                <div style="text-align: center; margin-bottom: 25px;">
+                    <img src="imagens/Semfundo.png" alt="Logo" class="login-logo">
                 </div>
                 <h1>Bem-vindo de volta!</h1>
                 <p>Faça login para acessar sua conta</p>
@@ -89,6 +93,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <i class="fas fa-eye" id="toggleIcon"></i>
                         </button>
                     </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="tipo" class="form-label">
+                        <i class="fas fa-user-tag"></i>
+                        Tipo de usuário
+                    </label>
+                    <select id="tipo" name="tipo" class="form-control" required>
+                        <option value="">Selecione o tipo de usuário</option>
+                        <option value="admin">Administrador</option>
+                        <option value="reporter">Repórter</option>
+                        <option value="leitor">Leitor</option>
+                    </select>
                 </div>
 
                 <div class="form-options">

@@ -14,16 +14,16 @@ $tipo_mensagem = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acao']) && $_POST['acao'] === 'adicionar') {
     $titulo = trim($_POST['titulo'] ?? '');
-    $conteudo = trim($_POST['conteudo'] ?? '');
+    $conteudo = trim($_POST['noticia'] ?? '');
     $imagem = trim($_POST['imagem'] ?? '');
-    $autor_id = $_SESSION['usuario_id'];
+    $autor = $_SESSION['usuario_id'];
 
     if (empty($titulo) || empty($conteudo)) {
         $mensagem = 'Preencha todos os campos obrigatórios.';
         $tipo_mensagem = 'erro';
     } else {
-        $stmt = $pdo->prepare('INSERT INTO noticias (titulo, conteudo, imagem, autor_id, data_publicacao) VALUES (?, ?, ?, ?, NOW())');
-        if ($stmt->execute([$titulo, $conteudo, $imagem, $autor_id])) {
+        $stmt = $pdo->prepare('INSERT INTO noticias (titulo, noticia, imagem, autor, data) VALUES (?, ?, ?, ?, NOW())');
+        if ($stmt->execute([$titulo, $conteudo, $imagem, $autor])) {
             $mensagem = 'Notícia publicada com sucesso!';
             $tipo_mensagem = 'sucesso';
             header('refresh:1');
@@ -34,23 +34,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acao']) && $_POST['ac
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acao']) && $_POST['acao'] === 'excluir') {
-    $id_noticia = $_POST['id_noticia'] ?? 0;
-    $stmt = $pdo->prepare('SELECT autor_id FROM noticias WHERE id = ?');
-    $stmt->execute([$id_noticia]);
-    $noticia = $stmt->fetch();
 
-    if ($noticia && $noticia['autor_id'] == $_SESSION['usuario_id']) {
-        $stmt = $pdo->prepare('DELETE FROM noticias WHERE id = ?');
-        $stmt->execute([$id_noticia]);
-        $mensagem = 'Notícia excluída com sucesso!';
-        $tipo_mensagem = 'sucesso';
-        header('refresh:1');
-    }
-}
 
 // Buscar apenas notícias do usuário logado para o dashboard
-$stmt = $pdo->prepare('SELECT n.*, u.nome as autor_nome FROM noticias n INNER JOIN usuarios u ON n.autor_id = u.id WHERE n.autor_id = ? ORDER BY n.data_publicacao DESC');
+$stmt = $pdo->prepare('SELECT n.*, u.nome as autor_nome FROM noticias n INNER JOIN usuarios u ON n.autor = u.id WHERE n.autor = ? ORDER BY n.data DESC');
 $stmt->execute([$_SESSION['usuario_id']]);
 $noticias = $stmt->fetchAll();
 
@@ -71,7 +58,7 @@ $total_usuarios = $pdo->query('SELECT COUNT(*) as total FROM usuarios')->fetch()
 </head>
 <body>
     <nav class="navbar">
-        <div class="navbar-brand"><i class="fas fa-wallet"></i> EcoFinanças</div>
+        <div class="navbar-brand"><img src="imagens/Semfundo.png" alt="Logo" class="navbar-logo"> EcoFinanças</div>
         <div class="navbar-info">
             <a href="index.php?view=portal" class="btn btn-ghost btn-sm"><i class="fas fa-home"></i> Início</a>
             <span class="usuario-nome"><i class="fas fa-user-circle"></i> <?= htmlspecialchars($_SESSION['usuario_nome']) ?></span>
@@ -85,11 +72,12 @@ $total_usuarios = $pdo->query('SELECT COUNT(*) as total FROM usuarios')->fetch()
             <div class="dashboard-welcome">
                 <div class="welcome-text">
                     <h1><i class="fas fa-tachometer-alt"></i> Meu perfil</h1>
-                    <p>Bem-vindo de volta, <?= htmlspecialchars($_SESSION['usuario_nome']) ?>! Gerencie suas notícias e veja suas estatísticas.</p>
+                    <p>Bem-vindo de volta, <?= htmlspecialchars($_SESSION['usuario_nome']) ?>! Seu tipo: <strong><?= ucfirst($_SESSION['usuario_tipo'] ?? 'leitor') ?></strong></p>
                 </div>
                 <div class="welcome-actions">
-                    <a href="nova_noticia.php" class="btn btn-primary"><i class="fas fa-plus"></i> Nova Notícia</a>
-                    <a href="index.php" class="btn btn-ghost"><i class="fas fa-globe"></i> Ver Site</a>
+                    <?php if ($_SESSION['usuario_tipo'] === 'reporter'): ?>
+                        <a href="nova_noticia.php" class="btn btn-primary"><i class="fas fa-plus"></i> Nova Notícia</a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -149,7 +137,8 @@ $total_usuarios = $pdo->query('SELECT COUNT(*) as total FROM usuarios')->fetch()
             </div>
         </div>
 
-        <!-- Lista de Minhas Notícias -->
+        <!-- Lista de Minhas Notícias (apenas para reporters) -->
+        <?php if ($_SESSION['usuario_tipo'] === 'reporter'): ?>
         <div class="dashboard-card">
             <div class="card-header">
                 <h2><i class="fas fa-list"></i> Minhas Publicações</h2>
@@ -175,14 +164,13 @@ $total_usuarios = $pdo->query('SELECT COUNT(*) as total FROM usuarios')->fetch()
                                     <div class="noticia-header">
                                         <h3 class="noticia-titulo"><?= htmlspecialchars($noticia['titulo']) ?></h3>
                                         <div class="noticia-meta">
-                                            <span class="noticia-data"><i class="fas fa-calendar"></i> <?= date('d/m/Y H:i', strtotime($noticia['data_publicacao'])) ?></span>
+                                            <span class="noticia-data"><i class="fas fa-calendar"></i> <?= date('d/m/Y H:i', strtotime($noticia['data'])) ?></span>
                                         </div>
                                     </div>
-                                    <p class="noticia-texto"><?= nl2br(htmlspecialchars(mb_strimwidth($noticia['conteudo'], 0, 150, '...'))) ?></p>
+                                    <p class="noticia-texto"><?= nl2br(htmlspecialchars(mb_strimwidth($noticia['noticia'], 0, 150, '...'))) ?></p>
                                     <div class="noticia-footer">
-                                        <form method="POST" action="" class="inline-form" onsubmit="return confirm('Tem certeza que deseja excluir esta notícia?')">
-                                            <input type="hidden" name="acao" value="excluir">
-                                            <input type="hidden" name="id_noticia" value="<?= $noticia['id'] ?>">
+                                        <form method="POST" action="excluir_noticia.php" class="inline-form" onsubmit="return confirm('Tem certeza que deseja excluir esta notícia?')">
+                                            <input type="hidden" name="id" value="<?= $noticia['id'] ?>">
                                             <button type="submit" class="btn btn-ghost btn-sm text-error"><i class="fas fa-trash"></i> Excluir</button>
                                         </form>
                                         <a href="editar_noticia.php?id=<?= $noticia['id'] ?>" class="btn btn-ghost btn-sm"><i class="fas fa-edit"></i> Editar</a>
@@ -194,6 +182,21 @@ $total_usuarios = $pdo->query('SELECT COUNT(*) as total FROM usuarios')->fetch()
                 <?php endif; ?>
             </div>
         </div>
+        <?php else: ?>
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h2><i class="fas fa-eye"></i> Modo Leitor</h2>
+            </div>
+            <div class="card-body">
+                <div class="empty-state">
+                    <i class="fas fa-book"></i>
+                    <h3>Bem-vindo ao modo de leitura</h3>
+                    <p>Seu tipo de usuário é <strong><?= ucfirst($_SESSION['usuario_tipo']) ?></strong>. Você pode visualizar notícias públicas no portal.</p>
+                    <a href="noticias.php" class="btn btn-primary" style="margin-top: 1rem;"><i class="fas fa-newspaper"></i> Ir para Notícias</a>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
     </div>
 
     <script>

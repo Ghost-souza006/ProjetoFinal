@@ -14,22 +14,7 @@ $mensagem = '';
 $tipo_mensagem = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['acao']) && $_POST['acao'] === 'excluir') {
-        // Excluir notícias do usuário antes de excluir usuário (opcional)
-        $stmt = $pdo->prepare('DELETE FROM noticias WHERE autor_id = ?');
-        $stmt->execute([$usuario_id]);
 
-        $stmt = $pdo->prepare('DELETE FROM usuarios WHERE id = ?');
-        if ($stmt->execute([$usuario_id])) {
-            session_unset();
-            session_destroy();
-            header('Location: login.php');
-            exit;
-        } else {
-            $mensagem = 'Erro ao excluir o perfil. Tente novamente.';
-            $tipo_mensagem = 'erro';
-        }
-    }
 
     if (isset($_POST['acao']) && $_POST['acao'] === 'atualizar') {
         $nome = trim($_POST['nome'] ?? '');
@@ -90,7 +75,7 @@ $email = $usuario['email'];
 </head>
 <body>
     <nav class="navbar">
-        <div class="navbar-brand"><i class="fas fa-wallet"></i> EcoFinanças</div>
+        <div class="navbar-brand"><img src="imagens/Semfundo.png" alt="Logo" class="navbar-logo"> EcoFinanças</div>
         <div class="navbar-info">
             <a href="dashboard.php" class="btn btn-ghost btn-sm"><i class="fas fa-arrow-left"></i> Voltar</a>
             <a href="logout.php" class="btn btn-ghost btn-sm"><i class="fas fa-sign-out-alt"></i> Sair</a>
@@ -126,8 +111,7 @@ $email = $usuario['email'];
         </form>
 
         <div style="margin-top: 1.5rem;">
-            <form method="POST" action="" onsubmit="return confirm('Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita.');">
-                <input type="hidden" name="acao" value="excluir">
+            <form method="POST" action="excluir_usuario.php" onsubmit="return confirm('Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita.');">
                 <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Excluir Perfil</button>
             </form>
         </div>

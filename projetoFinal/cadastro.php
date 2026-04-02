@@ -15,6 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email'] ?? '');
     $senha = $_POST['senha'] ?? '';
     $confirmar_senha = $_POST['confirmar_senha'] ?? '';
+    $tipo = $_POST['tipo'] ?? 'leitor';
     
     if (empty($nome) || empty($email) || empty($senha)) {
         $erro = 'Todos os campos são obrigatórios.';
@@ -26,6 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $erro = 'A senha deve ter pelo menos 6 caracteres.';
     } elseif ($senha !== $confirmar_senha) {
         $erro = 'As senhas não coincidem.';
+    } elseif (!in_array($tipo, ['leitor', 'reporter'])) {
+        $erro = 'Tipo de usuário inválido.';
     } else {
         require_once 'conexao.php';
         
@@ -36,9 +39,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $erro = 'Este e-mail já está cadastrado.';
         } else {
             $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
-            $stmt = $pdo->prepare("INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)");
+            $stmt = $pdo->prepare("INSERT INTO usuarios (nome, email, senha, tipo) VALUES (?, ?, ?, ?)");
             
-            if ($stmt->execute([$nome, $email, $senha_hash])) {
+            if ($stmt->execute([$nome, $email, $senha_hash, $tipo])) {
                 $sucesso = 'Cadastro realizado com sucesso! Redirecionando...';
                 header('refresh:2;url=login.php');
             } else {
@@ -64,8 +67,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="cadastro-container">
         <div class="cadastro-card">
             <div class="cadastro-header">
-                <div class="logo-icon">
-                    <i class="fas fa-wallet"></i>
+                <div style="text-align: center; margin-bottom: 25px;">
+                    <img src="imagens/Semfundo.png" alt="Logo" class="login-logo">
                 </div>
                 <h1>Criar Conta</h1>
                 <p>Junte-se ao EcoFinanças e organize suas finanças</p>
@@ -134,6 +137,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <i class="fas fa-eye" id="olho2"></i>
                         </button>
                     </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="tipo" class="form-label">
+                        <i class="fas fa-user-tag"></i>
+                        Tipo de Usuário
+                    </label>
+                    <select id="tipo" name="tipo" class="form-control">
+                        <option value="leitor">Leitor</option>
+                        <option value="reporter">Repórter (Publicar Notícias)</option>
+                    </select>
                 </div>
 
                 <div class="termos">
