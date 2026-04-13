@@ -18,7 +18,11 @@ $inicialUsuario = $isLogado ? mb_strtoupper(mb_substr($nomeUsuario, 0, 1, 'UTF-8
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>EcoFinanças - Portal de Notícias Financeiras</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -108,11 +112,11 @@ $inicialUsuario = $isLogado ? mb_strtoupper(mb_substr($nomeUsuario, 0, 1, 'UTF-8
 
     <!-- About Section -->
     <section class="about-section" style="background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%); padding: 4rem 0;">
-        <div class="container">
+        <div class="container" style="padding: 0 20px;">
             <div style="text-align: center; margin-bottom: 3rem;">
-                <h2 style="margin-bottom: 1rem;"><i class="fas fa-info-circle"></i> Sobre o EcoFinanças</h2>
-                <p style="max-width: 800px; margin: 0 auto; font-size: 1.1rem; color: var(--text-muted);">
-                    O EcoFinanças é uma plataforma desenvolvida como projeto final de curso técnico, com o objetivo de 
+                <h2 style="margin-bottom: 1rem; font-size: 2.25rem;"><i class="fas fa-info-circle"></i> Sobre o EcoFinanças</h2>
+                <p style="max-width: 800px; margin: 0 auto; font-size: 1.1rem; color: var(--text-muted); line-height: 1.7;">
+                    O EcoFinanças é uma plataforma desenvolvida como projeto final de curso técnico, com o objetivo de
                     demonstrar habilidades em desenvolvimento web, banco de dados e programação orientada a objetos.
                 </p>
             </div>
@@ -165,8 +169,8 @@ $inicialUsuario = $isLogado ? mb_strtoupper(mb_substr($nomeUsuario, 0, 1, 'UTF-8
 
     <!-- Categories Section -->
     <section class="categories-section" style="padding: 4rem 0;">
-        <div class="container">
-            <h2 style="text-align: center; margin-bottom: 3rem;"><i class="fas fa-th-large"></i> Categorias de Notícias</h2>
+        <div class="container" style="padding: 0 20px;">
+            <h2 style="text-align: center; margin-bottom: 3rem; font-size: 2.25rem;"><i class="fas fa-th-large"></i> Categorias de Notícias</h2>
             <div class="features-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
                 <div class="feature-card" style="text-align: center;">
                     <div class="feature-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
@@ -222,7 +226,7 @@ $inicialUsuario = $isLogado ? mb_strtoupper(mb_substr($nomeUsuario, 0, 1, 'UTF-8
 
     <!-- CTA Section -->
     <section class="cta-section">
-        <div class="container">
+        <div class="container" style="padding: 0 20px;">
             <h2>Pronto para começar?</h2>
             <p>Junte-se à nossa comunidade e tenha acesso a conteúdo financeiro exclusivo.</p>
             <div class="cta-actions">
@@ -238,7 +242,7 @@ $inicialUsuario = $isLogado ? mb_strtoupper(mb_substr($nomeUsuario, 0, 1, 'UTF-8
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="container">
+        <div class="container" style="padding: 0 20px;">
             <div class="footer-content">
                 <div class="footer-brand">
                     <img src="imagens/logo-ecofinancas.png" alt="Logo" style="height: 35px; margin-right: 0.5rem;">

@@ -105,16 +105,13 @@ $email = $usuario['email'];
                 <label for="senha" class="form-label"><i class="fas fa-lock"></i> Nova senha (deixe em branco para manter)</label>
                 <input type="password" id="senha" name="senha" class="form-control">
             </div>
-            <div class="form-actions">
+            <div class="form-actions" style="display: flex; gap: 15px; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-top: 30px;">
+                <form method="POST" action="excluir_usuario.php" onsubmit="return confirm('Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita.');" style="margin: 0;">
+                    <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Excluir Perfil</button>
+                </form>
                 <button type="submit" name="acao" value="atualizar" class="btn btn-primary"><i class="fas fa-save"></i> Salvar Alterações</button>
             </div>
         </form>
-
-        <div style="margin-top: 1.5rem;">
-            <form method="POST" action="excluir_usuario.php" onsubmit="return confirm('Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita.');">
-                <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Excluir Perfil</button>
-            </form>
-        </div>
     </main>
 </body>
 </html>
