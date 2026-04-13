@@ -225,6 +225,7 @@ O projeto utiliza um design moderno **"Soft UI"** com as seguintes característi
 ---
 ##📎Anexos📎
 ----> Desktop🖥️
+
 <img width="1303" height="636" alt="image" src="https://github.com/user-attachments/assets/7bbc9103-86e8-4a38-a5f8-8cdca05a58fe" />
 
 ---
@@ -235,7 +236,8 @@ O projeto utiliza um design moderno **"Soft UI"** com as seguintes característi
 <img width="1302" height="645" alt="image" src="https://github.com/user-attachments/assets/7b0af486-c439-4545-9172-17822281b842" />
 
 ----> Mobile📱
-<img width="249" height="552" alt="image" src="https://github.com/user-attachments/assets/d29e7f92-f322-4c19-a4ca-38bde386ce3b" />
+
+<img width="249" height="552" alt="image" src="https://github.com/user-attachments/assets/d29e7f92-f322-4c19-a4ca-38bde386ce3b" />     <img width="247" height="551" alt="image" src="https://github.com/user-attachments/assets/d1045ba2-0928-4dce-a9f2-2acbaa1db3b3" />
 
 ---
 <img width="247" height="551" alt="image" src="https://github.com/user-attachments/assets/d1045ba2-0928-4dce-a9f2-2acbaa1db3b3" />
