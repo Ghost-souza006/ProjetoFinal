@@ -222,6 +222,19 @@ O projeto utiliza um design moderno **"Soft UI"** com as seguintes característi
 - ✅ Gerenciamento de todas as notícias
 - ✅ Gerenciamento de todos os usuários
 - ✅ Controle de acesso por tipo (admin, reporter, leitor)
+---
+##📎Anexos📎
+
+<img width="1303" height="636" alt="image" src="https://github.com/user-attachments/assets/7bbc9103-86e8-4a38-a5f8-8cdca05a58fe" />
+
+
+
+
+
+
+
+
+
 
 ---
 ## 🏆 Autor(es)
