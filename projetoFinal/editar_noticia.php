@@ -6,8 +6,8 @@ if (!isset($_SESSION['usuario_id'])) {
     exit;
 }
 
-// Verificar se o usuário é reporter
-if ($_SESSION['usuario_tipo'] !== 'reporter') {
+// Verificar se o usuário é reporter ou admin
+if ($_SESSION['usuario_tipo'] !== 'reporter' && $_SESSION['usuario_tipo'] !== 'admin') {
     header('Location: dashboard.php');
     exit;
 }
@@ -19,8 +19,15 @@ $mensagem = '';
 $tipo_mensagem = '';
 
 // Buscar a notícia
-$stmt = $pdo->prepare('SELECT * FROM noticias WHERE id = ? AND autor = ?');
-$stmt->execute([$id_noticia, $_SESSION['usuario_id']]);
+if ($_SESSION['usuario_tipo'] === 'admin') {
+    // Admin pode editar qualquer notícia
+    $stmt = $pdo->prepare('SELECT n.*, u.nome as autor_nome FROM noticias n INNER JOIN usuarios u ON n.autor = u.id WHERE n.id = ?');
+    $stmt->execute([$id_noticia]);
+} else {
+    // Reporter só pode editar suas próprias notícias
+    $stmt = $pdo->prepare('SELECT * FROM noticias WHERE id = ? AND autor = ?');
+    $stmt->execute([$id_noticia, $_SESSION['usuario_id']]);
+}
 $noticia = $stmt->fetch();
 
 if (!$noticia) {
@@ -37,21 +44,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mensagem = 'Título e conteúdo são obrigatórios.';
         $tipo_mensagem = 'erro';
     } else {
-        $stmt = $pdo->prepare('UPDATE noticias SET titulo = ?, noticia = ?, imagem = ? WHERE id = ? AND autor = ?');
-        if ($stmt->execute([$titulo, $conteudo, $imagem, $id_noticia, $_SESSION['usuario_id']])) {
-            $mensagem = 'Notícia atualizada com sucesso!';
-            $tipo_mensagem = 'sucesso';
-            
-            // Recarregar notícia
-            $stmt = $pdo->prepare('SELECT * FROM noticias WHERE id = ? AND autor = ?');
-            $stmt->execute([$id_noticia, $_SESSION['usuario_id']]);
-            $noticia = $stmt->fetch();
-            
-            header('refresh:2;url=dashboard.php');
+        if ($_SESSION['usuario_tipo'] === 'admin') {
+            $stmt = $pdo->prepare('UPDATE noticias SET titulo = ?, noticia = ?, imagem = ? WHERE id = ?');
+            if ($stmt->execute([$titulo, $conteudo, $imagem, $id_noticia])) {
+                $mensagem = 'Notícia atualizada com sucesso!';
+                $tipo_mensagem = 'sucesso';
+                header('refresh:2;url=dashboard.php');
+                exit;
+            }
         } else {
-            $mensagem = 'Erro ao atualizar notícia.';
-            $tipo_mensagem = 'erro';
+            $stmt = $pdo->prepare('UPDATE noticias SET titulo = ?, noticia = ?, imagem = ? WHERE id = ? AND autor = ?');
+            if ($stmt->execute([$titulo, $conteudo, $imagem, $id_noticia, $_SESSION['usuario_id']])) {
+                $mensagem = 'Notícia atualizada com sucesso!';
+                $tipo_mensagem = 'sucesso';
+                header('refresh:2;url=dashboard.php');
+                exit;
+            }
         }
+        $mensagem = 'Erro ao atualizar notícia.';
+        $tipo_mensagem = 'erro';
     }
 }
 ?>

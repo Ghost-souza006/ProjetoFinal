@@ -1,56 +1,267 @@
-# Trabalho Final: Portal de Notícias 📰
+# EcoFinanças - Portal de Notícias Financeiras
 
-**Tema Escolhido:** 16 - Portal de Notícias Economia e Finanças Pessoais ("EcoFinanças")
+> Projeto final em PHP desenvolvido durante as aulas do curso técnico, abordando conceitos de desenvolvimento web, programação orientada a objetos e banco de dados relacional.
 
-## 🎯 Objetivo
-Desenvolver um sistema completo de portal de notícias em PHP, aplicando os conceitos de desenvolvimento web vistos durante a disciplina. O projeto inclui CRUDs de usuários e notícias, autenticação, uso de banco de dados relacional e uma interface amigável.
+**📅 Última Atualização:** 13 de abril de 2026
 
-## 🧩 Requisitos do Sistema Atendidos
+## 📌 Sobre o Projeto
 
-### 🔐 Autenticação de Usuários
-- [x] Cadastro de novos usuários (`cadastro.php`)
-- [x] Login com verificação (`login.php`)
-- [x] Logout (`logout.php`)
-- [x] Edição de conta (`editar_usuario.php`)
-- [x] Exclusão de conta (`excluir_usuario.php`)
+Este repositório contém um **Portal de Notícias Financeiras** completo em PHP, focando em conceitos essenciais do desenvolvimento web, como:
 
-### 📰 Tabela de Notícias (`dump.sql`)
-- `id` INT (Chave primária, auto-incremento)
-- `titulo` VARCHAR (Obrigatório)
-- `noticia` TEXT (Obrigatório)
-- `data` DATETIME (Data/hora da publicação)
-- `autor` INT (Chave estrangeira referenciando `usuarios.id`)
-- `imagem` VARCHAR (Opcional)
+- Autenticação e autorização de usuários
+- CRUD completo (Create, Read, Update, Delete)
+- Manipulação de Banco de Dados MySQL com PDO
+- Tratamento de exceções e segurança
+- Design responsivo com Soft UI e Glassmorphism
+- Sistema de sessões e controle de acesso
+- Upload e gerenciamento de imagens
 
-### 🔗 Relacionamentos e Funcionalidades
-- **Usuário:** Gerenciamento completo. Só é possível cadastrar notícias logado.
-- **Notícia:** O campo `autor` referencia explicitamente o ID do usuário. Edição e exclusão (`excluir_noticia.php`) funcionais protegidas por autor.
-- **Página Inicial:** Exibe listagem pública filtrada por ordem de recência (`data DESC`), mostrando título, texto, autor e data formatados.
+O projeto visa consolidar o aprendizado e pode ser utilizado como portfólio profissional.
 
-## 🎨 Estilização
-Projeto completamente refatorado em Vanilla HTML e CSS (`style.css`), aplicando o design **"Soft UI"** utilizando tons de Esmeralda, vidros foscos interativos (*glassmorphism*) e curvas confortáveis, organizando perfeitamente a distinção entre áreas públicas e logadas.
+---
+## 🛠️ Tecnologias Utilizadas
 
-## 📁 Estrutura de Arquivos
+- **PHP** (8.0+ recomendado)
+- **MySQL** (MariaDB 10.4+)
+- **PDO** para conexão com banco de dados
+- **HTML5 & CSS3** (Vanilla)
+- **JavaScript** (para interações no frontend)
+- **Font Awesome** para ícones
+- **Google Fonts** (Inter)
+- XAMPP para ambiente de desenvolvimento local
 
-### 🏠 Páginas Públicas
-- `index.php`: Página inicial com listagem
-- `noticia.php`: Página individual para leitura da notícia
-- `login.php`: Formulário de login
-- `cadastro.php`: Formulário de criação de conta
-- `logout.php`: Encerrar a sessão do usuário
+---
 
-### 🔐 Área Restrita
-- `dashboard.php`: Painel central do portal
-- `nova_noticia.php`: Formulário para nova notícia
-- `editar_noticia.php`: Edição de notícias
-- `excluir_noticia.php`: Deleção protegida de notícias
-- `editar_usuario.php`: Atualização de credenciais de login
-- `excluir_usuario.php`: Ferramenta para encerrar sua existência na base de dados
+## 🚀 Como Executar
 
-### 🧠 Banco de Dados e Conexão
-- `conexao.php`: Conexão PDO com MySQL
-- `funcoes.php`: Requisitos genéricos
-- `verifica_login.php`: Bloqueio de acesso para convidados
+### Pré-requisitos
+- [XAMPP](https://www.apachefriends.org/) instalado com Apache e MySQL
+- Navegador web moderno
 
-### 📦 Entrega
-Projeto integral disponível contendo os scripts de PHP, configurações visuais e o arquivo **`dump.sql`** atualizado para criar e popular o banco de testes. Nenhuma imagem avulsa está flutuando, todas restritas no diretório oficial **`imagens/`**.
+### Passo a Passo
+
+1. **Clone o repositório**:
+   ```bash
+   git clone https://github.com/seu-usuario/nome-do-repositorio.git
+   ```
+
+2. **Copie o projeto para o diretório do XAMPP**:
+   ```
+   C:\xampp\htdocs\projetoFinal
+   ```
+
+3. **Importe o banco de dados**:
+   - Abra o phpMyAdmin: `http://localhost/phpmyadmin`
+   - Crie um novo banco chamado `portal_financas`
+   - Importe o arquivo `dump.sql` ou execute o script `portal_financas.sql`
+
+4. **Configure a conexão** (se necessário):
+   - Edite o arquivo `conexao.php` com as credenciais do seu MySQL
+   ```php
+   $host = 'localhost';
+   $dbname = 'portal_financas';
+   $username = 'root';
+   $password = '';
+   ```
+
+5. **Inicie os serviços do XAMPP**:
+   - Ligue o Apache e MySQL no painel do XAMPP
+
+6. **Acesse a aplicação**:
+   - Abra o navegador e acesse: `http://localhost/projetoFinal`
+
+7. **Login padrão** (Administrador):
+   - **Email:** `admin@ecofinancas.com`
+   - **Senha:** `1`
+
+8. **Senha de Autorização** (para cadastrar novos admins):
+   - **Senha:** `1`
+
+---
+## 📂 Estrutura do Repositório
+
+```bash
+📂 projetoFinal
+├── 📁 admin/                      # Painel administrativo
+│   ├── dashboard.php              # Painel principal
+│   ├── nova_noticia.php           # Criar notícia
+│   ├── editar_noticia.php         # Editar notícia
+│   ├── excluir_noticia.php        # Excluir notícia
+│   ├── gerenciar_noticias.php     # Gerenciar todas as notícias
+│   ├── editar_usuario.php         # Editar usuário
+│   ├── excluir_usuario.php        # Excluir usuário
+│   └── gerenciar_usuarios.php     # Gerenciar todos os usuários
+│
+├── 📁 includes/                   # Arquivos de suporte
+│   ├── conexao.php                # Conexão com banco de dados
+│   ├── funcoes.php                # Funções auxiliares
+│   └── verifica_login.php         # Verificação de autenticação
+│
+├── 📁 imagens/                    # Imagens das notícias
+├── 📁 img/                        # Assets do projeto
+├── 📁 config/                     # Arquivos de configuração
+│
+├── index.php                      # Página inicial (pública)
+├── noticias.php                   # Listagem de notícias
+├── noticia.php                    # Visualização individual
+├── login.php                      # Página de login
+├── cadastro.php                   # Cadastro de usuário
+├── logout.php                     # Encerrar sessão
+├── dashboard.php                  # Dashboard do usuário
+├── conexao.php                    # Conexão PDO com MySQL
+├── funcoes.php                    # Funções genéricas
+├── config_seguranca.php           # Configurações de segurança
+├── verifica_login.php             # Bloqueio de acesso
+├── style.css                      # Estilização visual
+├── landing.js                     # Scripts do frontend
+├── dump.sql                       # Script do banco de dados
+├── portal_financas.sql            # Script alternativo do BD
+├── add_campos_reporter.sql        # Migração para repórteres
+├── corrigir_banco.sql             # Correções do banco
+├── README.md                      # Documentação
+├── ADMIN.md                       # Guia do administrador
+└── SEGURANCA.md                   # Políticas de segurança
+```
+
+---
+## 📖 Exemplos de Código
+
+### Conexão com Banco de Dados (conexao.php)
+
+```php
+<?php
+$host = 'localhost';
+$dbname = 'portal_financas';
+$username = 'root';
+$password = '';
+
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    die("Erro na conexão: " . $e->getMessage());
+}
+?>
+```
+
+### Estrutura do Banco de Dados
+
+**Tabela de Usuários:**
+```sql
+CREATE TABLE `usuarios` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nome` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `senha` varchar(255) NOT NULL,
+  `tipo` enum('admin','reporter','leitor') NOT NULL DEFAULT 'leitor',
+  `telefone` varchar(20) DEFAULT NULL,
+  `cpf` varchar(14) DEFAULT NULL,
+  `bio` text DEFAULT NULL,
+  `especialidade` varchar(100) DEFAULT NULL,
+  `foto_perfil` varchar(255) DEFAULT NULL,
+  `criado_em` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
+);
+```
+
+**Tabela de Notícias:**
+```sql
+CREATE TABLE `noticias` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `titulo` varchar(200) NOT NULL,
+  `noticia` text NOT NULL,
+  `data` datetime DEFAULT current_timestamp(),
+  `autor` int(11) NOT NULL,
+  `imagem` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `autor` (`autor`),
+  FOREIGN KEY (`autor`) REFERENCES `usuarios`(`id`)
+);
+```
+
+### Verificação de Login (verifica_login.php)
+
+```php
+<?php
+session_start();
+if (!isset($_SESSION['usuario_id'])) {
+    header('Location: ../login.php');
+    exit;
+}
+?>
+```
+
+---
+## 🎨 Design e Estilização
+
+O projeto utiliza um design moderno **"Soft UI"** com as seguintes características:
+
+- **Tons de Esmeralda:** Paleta de cores verde-esmeralda profissional
+- **Glassmorphism:** Efeitos de vidro fosco interativos
+- **Curvas Suaves:** Border radius para interfaces confortáveis
+- **Design Responsivo:** Compatível com desktop e mobile
+- **FontAwesome:** Ícones modernos e intuitivos
+- **Google Fonts (Inter):** Tipografia limpa e legível
+
+---
+## 🔐 Funcionalidades
+
+### 🏠 Área Pública
+- ✅ Página inicial com listagem de notícias por recência
+- ✅ Visualização individual de notícias
+- ✅ Cadastro de novos usuários
+- ✅ Login de usuários
+
+### 🔐 Área Restrita (Logada)
+- ✅ Dashboard personalizado
+- ✅ CRUD completo de notícias (criar, editar, excluir)
+- ✅ Edição de perfil do usuário
+- ✅ Gerenciamento de conta
+
+### 👑 Área Administrativa
+- ✅ Gerenciamento de todas as notícias
+- ✅ Gerenciamento de todos os usuários
+- ✅ Controle de acesso por tipo (admin, reporter, leitor)
+
+---
+## 🏆 Autor(es)
+
+👤 **Seu Nome**  
+📧 Email: seuemail@exemplo.com  
+🔗 [LinkedIn](https://www.linkedin.com/in/seu-perfil/)  
+🔗 [GitHub](https://github.com/seu-usuario/)
+
+---
+
+## 🎯 Objetivo do Repositório
+
+Este repositório serve como um portfólio para demonstrar habilidades em desenvolvimento web com PHP, aplicando conceitos de:
+- Programação Orientada a Objetos
+- Banco de Dados Relacional (MySQL)
+- MVC simplificado
+- Segurança web (hash de senhas, prevenção SQL injection com PDO)
+- Design responsivo e moderno
+
+O projeto ajuda na busca de oportunidades de emprego na área de desenvolvimento em um futuro próximo.
+
+---
+## ⚖️ Licença
+
+Este projeto está sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+---
+
+## 📝 Notas
+
+- **Ambiente de Desenvolvimento:** XAMPP (Apache + MySQL + PHP)
+- **Sistema Operacional:** Windows
+- **IDE Recomendada:** VS Code, PHPStorm ou qualquer editor de texto
+- **Navegadores Testados:** Chrome, Firefox, Edge
+
+---
+
+<div align="center">
+  <strong>⭐ Se este projeto foi útil, deixe uma estrela no repositório!</strong>
+</div>

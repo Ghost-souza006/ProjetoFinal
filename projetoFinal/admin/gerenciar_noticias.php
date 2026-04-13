@@ -55,9 +55,6 @@ $total_noticias = count($noticias);
                     <h1><i class="fas fa-newspaper"></i> Gerenciar Notícias</h1>
                     <p>Visualize, edite e exclua todas as notícias do portal</p>
                 </div>
-                <div class="welcome-actions">
-                    <a href="nova_noticia.php" class="btn btn-primary"><i class="fas fa-plus"></i> Nova Notícia</a>
-                </div>
             </div>
         </div>
 

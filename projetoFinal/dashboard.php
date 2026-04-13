@@ -34,11 +34,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acao']) && $_POST['ac
     }
 }
 
-
-
-// Buscar apenas notícias do usuário logado para o dashboard
-$stmt = $pdo->prepare('SELECT n.*, u.nome as autor_nome FROM noticias n INNER JOIN usuarios u ON n.autor = u.id WHERE n.autor = ? ORDER BY n.data DESC');
-$stmt->execute([$_SESSION['usuario_id']]);
+// Buscar notícias para o dashboard
+if ($_SESSION['usuario_tipo'] === 'admin') {
+    // Admin vê todas as notícias
+    $stmt = $pdo->prepare('SELECT n.*, u.nome as autor_nome FROM noticias n INNER JOIN usuarios u ON n.autor = u.id ORDER BY n.data DESC');
+    $stmt->execute();
+} else {
+    // Reporter vê apenas suas notícias
+    $stmt = $pdo->prepare('SELECT n.*, u.nome as autor_nome FROM noticias n INNER JOIN usuarios u ON n.autor = u.id WHERE n.autor = ? ORDER BY n.data DESC');
+    $stmt->execute([$_SESSION['usuario_id']]);
+}
 $noticias = $stmt->fetchAll();
 
 $total_noticias_usuario = count($noticias);
@@ -133,7 +138,7 @@ $total_usuarios = $pdo->query('SELECT COUNT(*) as total FROM usuarios')->fetch()
                     <div class="profile-field"><strong>Total no portal:</strong> <?= $total_noticias_geral ?></div>
                     <div class="profile-field"><strong>Usuários:</strong> <?= $total_usuarios ?></div>
                 </div>
-                <p class="profile-mensagem">Use os botões abaixo em cada notícia para <strong>editar</strong> ou <strong>excluir</strong>. Para publicar novo conteúdo, vá em <a href="nova_noticia.php">Nova Notícia</a>.</p>
+                <p class="profile-mensagem">Use os botões abaixo em cada notícia para <strong>editar</strong> ou <strong>excluir</strong>. Para gerenciar todas as notícias, acesse <a href="admin/gerenciar_noticias.php">Gerenciar Notícias</a>.</p>
             </div>
         </div>
 
@@ -168,18 +173,39 @@ $total_usuarios = $pdo->query('SELECT COUNT(*) as total FROM usuarios')->fetch()
                                         </div>
                                     </div>
                                     <p class="noticia-texto"><?= nl2br(htmlspecialchars(mb_strimwidth($noticia['noticia'], 0, 150, '...'))) ?></p>
+                                    <?php if ($_SESSION['usuario_tipo'] === 'admin'): ?>
+                                        <p class="noticia-autor" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;"><i class="fas fa-user"></i> Por: <?= htmlspecialchars($noticia['autor_nome']) ?></p>
+                                    <?php endif; ?>
                                     <div class="noticia-footer">
                                         <form method="POST" action="excluir_noticia.php" class="inline-form" onsubmit="return confirm('Tem certeza que deseja excluir esta notícia?')">
                                             <input type="hidden" name="id" value="<?= $noticia['id'] ?>">
                                             <button type="submit" class="btn btn-ghost btn-sm text-error"><i class="fas fa-trash"></i> Excluir</button>
                                         </form>
-                                        <a href="editar_noticia.php?id=<?= $noticia['id'] ?>" class="btn btn-ghost btn-sm"><i class="fas fa-edit"></i> Editar</a>
+                                        <a href="admin/editar_noticia.php?id=<?= $noticia['id'] ?>" class="btn btn-ghost btn-sm"><i class="fas fa-edit"></i> Editar</a>
                                     </div>
                                 </div>
                             </div>
                         <?php endforeach; ?>
                     </div>
                 <?php endif; ?>
+            </div>
+        </div>
+        <?php elseif ($_SESSION['usuario_tipo'] === 'admin'): ?>
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h2><i class="fas fa-shield-alt"></i> Painel do Administrador</h2>
+            </div>
+            <div class="card-body">
+                <div class="empty-state">
+                    <i class="fas fa-user-shield"></i>
+                    <h3>Modo Administrador</h3>
+                    <p>Seu tipo de usuário é <strong>Administrador</strong>. Você pode <strong>editar</strong> e <strong>excluir</strong> notícias de qualquer usuário, mas <strong>não pode criar novas notícias</strong>.</p>
+                    <div style="margin-top: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+                        <a href="admin/gerenciar_noticias.php" class="btn btn-secondary"><i class="fas fa-newspaper"></i> Gerenciar Notícias</a>
+                        <a href="admin/gerenciar_usuarios.php" class="btn btn-primary"><i class="fas fa-users-cog"></i> Gerenciar Usuários</a>
+                        <a href="noticias.php" class="btn btn-ghost"><i class="fas fa-eye"></i> Ver Portal</a>
+                    </div>
+                </div>
             </div>
         </div>
         <?php else: ?>

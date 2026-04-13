@@ -152,12 +152,12 @@ $total_usuarios = $pdo->query('SELECT COUNT(*) as total FROM usuarios')->fetch()
                     <div class="profile-field"><strong>Total no portal:</strong> <?= $total_noticias_geral ?></div>
                     <div class="profile-field"><strong>Usuários:</strong> <?= $total_usuarios ?></div>
                 </div>
-                <p class="profile-mensagem">Use os botões abaixo em cada notícia para <strong>editar</strong> ou <strong>excluir</strong>. Para publicar novo conteúdo, vá em <a href="nova_noticia.php">Nova Notícia</a>.</p>
+                <p class="profile-mensagem">Use os botões abaixo em cada notícia para <strong>editar</strong> ou <strong>excluir</strong>. Para gerenciar todas as notícias, acesse <a href="gerenciar_noticias.php">Gerenciar Notícias</a>.</p>
             </div>
         </div>
 
-        <!-- Lista de Minhas Notícias (para reporter e admin) -->
-        <?php if ($_SESSION['usuario_tipo'] === 'reporter' || $_SESSION['usuario_tipo'] === 'admin'): ?>
+        <!-- Lista de Minhas Notícias (apenas para reporter) -->
+        <?php if ($_SESSION['usuario_tipo'] === 'reporter'): ?>
         <div class="dashboard-card">
             <div class="card-header">
                 <h2><i class="fas fa-list"></i> Minhas Publicações</h2>
@@ -204,6 +204,20 @@ $total_usuarios = $pdo->query('SELECT COUNT(*) as total FROM usuarios')->fetch()
                         <?php endforeach; ?>
                     </div>
                 <?php endif; ?>
+            </div>
+        </div>
+        <?php elseif ($_SESSION['usuario_tipo'] === 'admin'): ?>
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h2><i class="fas fa-shield-alt"></i> Painel do Administrador</h2>
+                <a href="gerenciar_noticias.php" class="btn btn-secondary"><i class="fas fa-newspaper"></i> Gerenciar Todas as Notícias</a>
+            </div>
+            <div class="card-body">
+                <div class="empty-state">
+                    <i class="fas fa-user-shield"></i>
+                    <h3>Modo Administrador</h3>
+                    <p>Seu tipo de usuário é <strong>Administrador</strong>. Você pode <strong>editar</strong> e <strong>excluir</strong> notícias de qualquer usuário, mas <strong>não pode criar novas notícias</strong>.</p>
+                </div>
             </div>
         </div>
         <?php else: ?>

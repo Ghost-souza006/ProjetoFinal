@@ -11,7 +11,7 @@
 // ============================================
 // Altere esta senha para controlar quem pode cadastrar administradores
 // Recomendação: Use uma senha forte com letras, números e símbolos
-define('SENHA_AUTORIZACAO_ADMIN', 'EcoFin2026!Admin');
+define('SENHA_AUTORIZACAO_ADMIN', '1');
 
 // ============================================
 // OUTRAS CONFIGURAÇÕES DE SEGURANÇA
