@@ -226,7 +226,9 @@ O projeto utiliza um design moderno **"Soft UI"** com as seguintes característi
 ##📎Anexos📎
 ----> Desktop🖥️
 <img width="1303" height="636" alt="image" src="https://github.com/user-attachments/assets/7bbc9103-86e8-4a38-a5f8-8cdca05a58fe" />
+----
 <img width="1300" height="650" alt="image" src="https://github.com/user-attachments/assets/d5c3a2a7-4cfc-4fa2-86c3-1e888360bcc0" />
+----
 <img width="1302" height="645" alt="image" src="https://github.com/user-attachments/assets/7b0af486-c439-4545-9172-17822281b842" />
 
 
